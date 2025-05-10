@@ -1,3 +1,5 @@
 GES-db/
 
 .idea/
+
+.env

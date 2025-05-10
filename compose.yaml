@@ -8,12 +8,12 @@ services:
     ports:
       - 5431:5432
     volumes:
-      - ../GES-db:/var/lib/postgresql/data
+      - ./GES-db:/var/lib/postgresql/data
     networks:
       - db
 
   pgadmin:
-    image: 'dpage/pgadmin4'
+    image: 'dpage/pgadmin4:9.3'
     ports:
       - 5050:80
     environment:
@@ -22,9 +22,11 @@ services:
     networks:
       - db
       - pg
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
   spring:
-    build: .
+    build: ./GES-backend
     depends_on:
       - postgres
     ports:
@@ -37,7 +39,18 @@ services:
       - db
       - spring
 
+  frontend:
+    build:
+      context: ./ges-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - spring
+
 networks:
   db: {}
   pg: {}
   spring: {}
+
+volumes:
+  pgadmin-data:
