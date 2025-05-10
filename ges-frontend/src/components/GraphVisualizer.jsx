@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import './GraphVisualizer.css';
-
+import PseudoCodeHighlighter from "./PseudoCodeHighlighter";
+import axios from "axios";
 // import normalizeElements from CytoscapeComponent
 
 // const elements = [
@@ -12,23 +13,46 @@ import './GraphVisualizer.css';
 //     { data: { source: 'A', target: 'C' } },
 // ];
 
-const elements = {
-        nodes: [
-            { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
-            { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
-            { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
-        ],
-        edges: [
-            { data: { source: 'A', target: 'B' } },
-            { data: { source: 'A', target: 'C' } },
-        ]
-    };
+// const elements = {
+//         nodes: [
+//             { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
+//             { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
+//             { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
+//         ],
+//         edges: [
+//             { data: { source: 'A', target: 'B' } },
+//             { data: { source: 'A', target: 'C' } },
+//         ]
+//     };
 
 const layout = { name: 'breadthfirst' };
+
+const stepToLineMap = [0, 1, 2, 3, 4];
+
+const pseudoCode = [
+    'DFS(node):',
+    '  mark node as visited',
+    '  for each neighbor of node:',
+    '    if neighbor not visited:',
+    '      DFS(neighbor)',
+];
 
 export default function GraphVisualizer() {
     const cyRef = useRef(null);
     const [step, setStep] = useState(0);
+    const [showCode, setShowCode] = useState(false);
+
+    const [elements, setElements] = useState([]); // 🚨 дані з бекенда
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/graph')
+            .then(response => {
+                setElements(response.data.elements);
+            })
+            .catch(error => {
+                console.error('Помилка при завантаженні графа:', error);
+            });
+    }, []);
 
     const steps = [
         ['A'],
@@ -52,9 +76,16 @@ export default function GraphVisualizer() {
         highlightNodes(steps[next]);
     };
 
+    const toggleCode = () => {
+        setShowCode(prev => !prev);
+    };
+
     return (
         <div>
             <button onClick={nextStep}>Наступний крок</button>
+            <button onClick={toggleCode} style={{ marginLeft: '10px' }}>
+                {showCode ? 'Сховати псевдокод' : 'Показати псевдокод'}
+            </button>
             <div className="graph-container">
             <CytoscapeComponent
                 elements={CytoscapeComponent.normalizeElements(elements)}
@@ -86,6 +117,13 @@ export default function GraphVisualizer() {
                 // userZoomingEnabled={true}
             />
             </div>
+
+            {showCode && (
+                <PseudoCodeHighlighter
+                    codeLines={pseudoCode}
+                    currentLine={stepToLineMap[step]}
+                />
+            )}
         </div>
     );
 }

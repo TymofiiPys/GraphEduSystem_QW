@@ -3,10 +3,10 @@
 }
 
 .cyc{
-    width: 99vw;
+    width: 100vw;
     height: 80vh;
     margin: 0 auto;
-    border: 1px solid #ccc;
+    border-top: 1px solid #ccc;
     /*position:absolute;*/
     z-index:0;
     bottom:0;

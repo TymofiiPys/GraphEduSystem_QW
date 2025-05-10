@@ -1,0 +1,22 @@
+.pseudocode-block {
+    background-color: #f7f7f7;
+    padding: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 600px;
+    white-space: pre-wrap;
+    position: absolute;
+    left: 10vw;
+    top: 20vh;
+}
+
+.pseudocode-line {
+    padding: 2px 6px;
+    transition: background-color 0.3s;
+}
+
+.pseudocode-line.highlighted {
+    background-color: #d0f0ff;
+    font-weight: bold;
+}
