@@ -13,17 +13,17 @@ import axios from "axios";
 //     { data: { source: 'A', target: 'C' } },
 // ];
 
-// const elements = {
-//         nodes: [
-//             { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
-//             { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
-//             { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
-//         ],
-//         edges: [
-//             { data: { source: 'A', target: 'B' } },
-//             { data: { source: 'A', target: 'C' } },
-//         ]
-//     };
+const elements = {
+        nodes: [
+            { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
+            { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
+            { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
+        ],
+        edges: [
+            { data: { source: 'A', target: 'B' } },
+            { data: { source: 'A', target: 'C' } },
+        ]
+    };
 
 const layout = { name: 'breadthfirst' };
 
@@ -42,17 +42,28 @@ export default function GraphVisualizer() {
     const [step, setStep] = useState(0);
     const [showCode, setShowCode] = useState(false);
 
-    const [elements, setElements] = useState([]); // 🚨 дані з бекенда
+    // const [elements, setElements] = useState([]); 
 
-    useEffect(() => {
-        axios.get('http://localhost:8080/api/graph')
-            .then(response => {
-                setElements(response.data.elements);
-            })
-            .catch(error => {
-                console.error('Помилка при завантаженні графа:', error);
-            });
-    }, []);
+    // useEffect(() => {setElements({
+    //     nodes: [
+    //         { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
+    //         { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
+    //         { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
+    //     ],
+    //     edges: [
+    //         { data: { source: 'A', target: 'B' } },
+    //         { data: { source: 'A', target: 'C' } },
+    //     ]
+    // })}, []);
+    // useEffect(() => {
+    //     axios.get('/api/graph')
+    //         .then(response => {
+    //             setElements(response.data.elements);
+    //         })
+    //         .catch(error => {
+    //             console.error('Помилка при завантаженні графа:', error);
+    //         });
+    // }, []);
 
     const steps = [
         ['A'],
@@ -80,12 +91,23 @@ export default function GraphVisualizer() {
         setShowCode(prev => !prev);
     };
 
+    const showGraph1 = () => {
+        // axios.get('/api/graph')
+        //     .then(response => {
+        //         setElements(response.data.elements);
+        //     })
+        //     .catch(error => {
+        //         console.error('Помилка при завантаженні графа:', error);
+        //     });
+    };
+
     return (
         <div>
             <button onClick={nextStep}>Наступний крок</button>
             <button onClick={toggleCode} style={{ marginLeft: '10px' }}>
                 {showCode ? 'Сховати псевдокод' : 'Показати псевдокод'}
             </button>
+            <button onClick={showGraph1} style={{ marginLeft: '10px' }}>Граф 1</button>
             <div className="graph-container">
             <CytoscapeComponent
                 elements={CytoscapeComponent.normalizeElements(elements)}
