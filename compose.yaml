@@ -1,5 +1,6 @@
 services:
   postgres:
+    container_name: postgres
     image: 'postgres:17-alpine'
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -13,6 +14,7 @@ services:
       - db
 
   pgadmin:
+    container_name: pgadmin
     image: 'dpage/pgadmin4:9.3'
     ports:
       - 5050:80
@@ -26,6 +28,7 @@ services:
       - pgadmin-data:/var/lib/pgadmin
 
   spring:
+    container_name: spring
     build: ./GES-backend
     depends_on:
       - postgres
@@ -40,12 +43,16 @@ services:
       - spring
 
   frontend:
+    container_name: frontend
     build:
       context: ./ges-frontend
     ports:
       - "3000:3000"
     networks:
       - spring
+    volumes:
+      - /app/node_modules
+      - ./ges-frontend:/app
 
 networks:
   db: {}
