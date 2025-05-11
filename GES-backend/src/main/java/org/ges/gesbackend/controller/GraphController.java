@@ -21,7 +21,8 @@ public class GraphController {
 
         // Nodes
         List<Map<String, Object>> nodes = new ArrayList<>();
-        nodes.add(Map.of("data", Map.of("id", "A", "label", "1"), "pannable", false, "grabbable", true));
+        nodes.add(Map.of("data", Map.of("id", "A", "label", "5/gr5"), "pannable", false, "grabbable", true));
+//        nodes.add(Map.of("data", Map.of("id", "A", "label", "5"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "B", "label", "2"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "C","label", "228"), "pannable", false, "grabbable", true));
 

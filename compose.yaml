@@ -34,10 +34,15 @@ services:
       - postgres
     ports:
       - "8080:8080"
+      - "35729:35729"
     environment:
       SPRING_DATASOURCE_URL: ${JDBC_DB}
       SPRING_DATASOURCE_USERNAME: ${DB_UNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PWD}
+      SPRING_DEV_SECRET: ${SPRING_DEV_SECRET}
+    volumes:
+      - ./GES-backend:/app
+      - ./.gradle:/root/.gradle
     networks:
       - db
       - spring
