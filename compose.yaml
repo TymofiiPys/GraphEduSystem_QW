@@ -42,7 +42,7 @@ services:
       SPRING_DEV_SECRET: ${SPRING_DEV_SECRET}
     volumes:
       - ./GES-backend:/app
-      - ./.gradle:/root/.gradle
+      - gradle-dep:/root/.gradle
     networks:
       - db
       - spring
@@ -66,3 +66,4 @@ networks:
 
 volumes:
   pgadmin-data:
+  gradle-dep:

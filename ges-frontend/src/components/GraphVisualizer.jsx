@@ -29,7 +29,7 @@ const elements = {
   ],
 };
 
-const layout = { name: "dagre" };
+const layoutOptions = { name: "dagre" };
 
 const stepToLineMap = [0, 1, 2, 3, 4];
 
@@ -72,7 +72,7 @@ export default function GraphVisualizer() {
 
   useEffect(() => {
     if (cyRef.current) {
-      const layoutOptions = { name: "breadthfirst" };
+      // const layoutOptions = { name: "dagre" };
       const layout = cyRef.current.layout(layoutOptions);
       cyRef.current.zoom({
         level: 1,
@@ -144,7 +144,7 @@ export default function GraphVisualizer() {
           elements={CytoscapeComponent.normalizeElements(elements)}
           // style={{ width: '100vw', height: '100vh', zindex:'999', }}
           className="cyc"
-          layout={layout}
+          layout={layoutOptions}
           cy={(cy) => {
             cyRef.current = cy;
             cy.zoom({
