@@ -1,5 +1,7 @@
 package org.ges.gesbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,16 +33,19 @@ public class Node {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "graph_id", nullable = false)
+    @JsonBackReference
     private Graph graph;
 
     @Column(name = "metadata")
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> metadata;
 
-    @OneToMany
-    private Set<Edge> edges_src = new LinkedHashSet<>();
-
-    @OneToMany
-    private Set<Edge> edges_tgt = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "source")
+//    @JsonManagedReference
+//    private Set<Edge> edges_src = new LinkedHashSet<>();
+//
+//    @OneToMany(mappedBy = "target")
+//    @JsonManagedReference
+//    private Set<Edge> edges_tgt = new LinkedHashSet<>();
 
 }

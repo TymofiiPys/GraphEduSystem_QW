@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.type.SqlTypes;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -17,27 +20,31 @@ import java.util.UUID;
 @Setter
 @Entity
 @Immutable
-@Table(name = "edges_id")
-public class EdgesId {
+@Table(name = "edges_info")
+public class EdgesInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
 
 //    @Column(name = "graph_id")
+//    private UUID graphId;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     @JoinColumn(name = "graph_id", nullable = false)
     private Graph graphId;
 
-    @Column(name = "source", length = 32)
-    private String source;
+    @Column(name = "src_id", length = 32)
+    private String srcId;
 
-    @Column(name = "target", length = 32)
-    private String target;
+    @Column(name = "tgt_id", length = 32)
+    private String tgtId;
 
-    @Column(name = "edge_id", length = Integer.MAX_VALUE)
-    private String edgeId;
+    @Column(name = "metadata")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, Object> metadata;
 
+    @Column(name = "edge_name", length = 65)
+    private String edgeName;
 }

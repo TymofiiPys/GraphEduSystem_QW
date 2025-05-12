@@ -1,5 +1,6 @@
 package org.ges.gesbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,14 @@ public class Graph {
     private String type;
 
     @OneToMany(mappedBy = "graph")
+    @JsonManagedReference
     private Set<Node> nodes = new LinkedHashSet<>();
 
+//    @OneToMany(mappedBy = "graph")
+//    @JsonManagedReference
+//    private Set<Edge> edges = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "graphId")
+    @JsonManagedReference
+    private Set<EdgesInfo> edges = new LinkedHashSet<>();
 }
