@@ -65,5 +65,5 @@ networks:
   spring: {}
 
 volumes:
-  pgadmin-data:
+  # pgadmin-data:
   gradle-dep:
