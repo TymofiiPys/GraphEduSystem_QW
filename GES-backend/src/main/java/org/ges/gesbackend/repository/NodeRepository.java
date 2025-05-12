@@ -1,9 +1,9 @@
 package org.ges.gesbackend.repository;
 
-import org.hibernate.graph.GraphNode;
+import org.ges.gesbackend.entity.Node;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface NodeRepository  extends JpaRepository<GraphNode, UUID> {
+public interface NodeRepository extends JpaRepository<Node, UUID> {
 }
