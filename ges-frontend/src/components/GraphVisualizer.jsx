@@ -4,31 +4,7 @@ import dagre from "cytoscape-dagre";
 import "./GraphVisualizer.css";
 import PseudoCodeHighlighter from "./PseudoCodeHighlighter";
 import axios from "axios";
-// import cytoscape from "cytoscape";
 
-// const elements = [
-//     { data: { id: 'A' } },
-//     { data: { id: 'B' } },
-//     { data: { id: 'C' } },
-//     { data: { source: 'A', target: 'B' } },
-//     { data: { source: 'A', target: 'C' } },
-// ];
-
-// cytoscape.use(dagre);
-
-// const elements = {
-//   nodes: [
-//     { data: { id: "A", label: "1" }, pannable: false, grabbable: true },
-//     { data: { id: "B", label: "2" }, pannable: false, grabbable: true },
-//     { data: { id: "C", label: "3" }, pannable: false, grabbable: true },
-//   ],
-//   edges: [
-//     { data: { source: "A", target: "B" } },
-//     { data: { source: "A", target: "C" } },
-//   ],
-// };
-
-// const layoutOptions = { name: "dagre" };
 const layoutOptions = { name: "cose" };
 
 const stepToLineMap = [0, 1, 2, 3, 4];
@@ -48,17 +24,6 @@ export default function GraphVisualizer() {
 
   const [elements, setElements] = useState([]);
 
-  // useEffect(() => {setElements({
-  //     nodes: [
-  //         { data: { id: 'A', label: '1' }, pannable: false, grabbable: true },
-  //         { data: { id: 'B', label: '2' }, pannable: false, grabbable: true },
-  //         { data: { id: 'C', label: '3' }, pannable: false, grabbable: true }
-  //     ],
-  //     edges: [
-  //         { data: { source: 'A', target: 'B' } },
-  //         { data: { source: 'A', target: 'C' } },
-  //     ]
-  // })}, []);
   useEffect(() => {
     axios
       .get("/api/graph/old")
@@ -123,7 +88,6 @@ export default function GraphVisualizer() {
     axios
       .get("/api/graph/0e7ef67a-fbc3-43c3-bf9c-b3f6bffb9fe2")
       .then((res) => {
-        // setElements(response.data.elements);
         const { nodes, edges } = res.data;
         const cyNodes = nodes.map((node) => ({
           data: { id: node.nodeId, label: node.nodeId },
@@ -176,9 +140,7 @@ export default function GraphVisualizer() {
               .selector("edge")
               .style({
                 width: 4,
-                // "target-arrow-shape": "triangle",
                 "line-color": "#9dbaea",
-                // "target-arrow-color": "#9dbaea",
                 "curve-style": "bezier",
               })
               .update();

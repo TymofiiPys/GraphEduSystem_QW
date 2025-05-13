@@ -73,6 +73,9 @@ public class GraphService {
                     }
                     graph.setEdges(edges);
                     break;
+                case "DIRGRAPH":
+                case "WGRAPH":
+                    break;
                 default:
                     graph.setType("GRAPH");
                     break;

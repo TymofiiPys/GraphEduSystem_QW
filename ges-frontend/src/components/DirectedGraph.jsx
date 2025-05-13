@@ -17,7 +17,7 @@ const pseudoCode = [
   "      DFS(neighbor)",
 ];
 
-export default function WeightedGraph() {
+export default function DirectedGraph() {
   const cyRef = useRef(null);
   const [step, setStep] = useState(0);
   const [showCode, setShowCode] = useState(false);
@@ -86,7 +86,7 @@ export default function WeightedGraph() {
 
   const showGraph1 = () => {
     axios
-      .get("/api/graph/5915ed93-7a41-4a78-ab23-b89856a26927")
+      .get("/api/graph/c150e244-9894-433e-97c2-d2019a23af50")
       .then((res) => {
         const { nodes, edges } = res.data;
         const cyNodes = nodes.map((node) => ({
@@ -99,8 +99,7 @@ export default function WeightedGraph() {
             id: edge.id,
             source: edge.srcId,
             target: edge.tgtId,
-            label: edge.metadata.weight,
-            // label: "VOVA",
+            label: edge.edgeName,
           },
         }));
 
@@ -141,12 +140,10 @@ export default function WeightedGraph() {
               .selector("edge")
               .style({
                 width: 4,
-                // "target-arrow-shape": "triangle",
+                "target-arrow-shape": "triangle",
                 "line-color": "#9dbaea",
-                // "target-arrow-color": "#9dbaea",
+                "target-arrow-color": "#9dbaea",
                 "curve-style": "bezier",
-                "edge-text-rotation": "autorotate",
-                "label": "data(label)"
               })
               .update();
             // cy.center()
@@ -157,7 +154,7 @@ export default function WeightedGraph() {
           // userZoomingEnabled={true}
         />
       </div>
-
+      
       {showCode && (
         <PseudoCodeHighlighter
           codeLines={pseudoCode}
