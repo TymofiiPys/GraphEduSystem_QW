@@ -4,7 +4,7 @@ import dagre from "cytoscape-dagre";
 import "./GraphVisualizer.css";
 import PseudoCodeHighlighter from "./PseudoCodeHighlighter";
 import axios from "axios";
-// import cytoscape from "cytoscape";
+import cytoscape from "cytoscape";
 
 // const elements = [
 //     { data: { id: 'A' } },
@@ -14,7 +14,7 @@ import axios from "axios";
 //     { data: { source: 'A', target: 'C' } },
 // ];
 
-// cytoscape.use(dagre);
+cytoscape.use(dagre);
 
 // const elements = {
 //   nodes: [
@@ -28,8 +28,8 @@ import axios from "axios";
 //   ],
 // };
 
-// const layoutOptions = { name: "dagre" };
-const layoutOptions = { name: "cose" };
+const layoutOptions = { name: "dagre" };
+// const layoutOptions = { name: "cose" };
 
 const stepToLineMap = [0, 1, 2, 3, 4];
 
@@ -41,7 +41,7 @@ const pseudoCode = [
   "      DFS(neighbor)",
 ];
 
-export default function GraphVisualizer() {
+export default function BST() {
   const cyRef = useRef(null);
   const [step, setStep] = useState(0);
   const [showCode, setShowCode] = useState(false);
@@ -71,7 +71,9 @@ export default function GraphVisualizer() {
   }, []);
 
   useEffect(() => {
+    console.log(elements);
     if (cyRef.current) {
+      // const layoutOptions = { name: "dagre" };
       const layout = cyRef.current.layout(layoutOptions);
       cyRef.current.zoom({
         level: 1,
@@ -87,9 +89,9 @@ export default function GraphVisualizer() {
       //   .selector("edge")
       //   .style({
       //     width: 4,
-      //     // 'target-arrow-shape': 'triangle',
+      //     'target-arrow-shape': 'triangle',
       //     "line-color": "#9dbaea",
-      //     // 'target-arrow-color': '#9dbaea',
+      //     'target-arrow-color': '#9dbaea',
       //     "curve-style": "bezier",
       //   })
       //   .update();
@@ -121,15 +123,28 @@ export default function GraphVisualizer() {
 
   const showGraph1 = () => {
     axios
-      .get("/api/graph/0e7ef67a-fbc3-43c3-bf9c-b3f6bffb9fe2")
+      .get("/api/graph/7982f55f-5b0d-44f3-b4d8-513e8e728574")
       .then((res) => {
         // setElements(response.data.elements);
         const { nodes, edges } = res.data;
-        const cyNodes = nodes.map((node) => ({
-          data: { id: node.nodeId, label: node.nodeId },
-          pannable: false,
-          grabbable: true,
-        }));
+        const cyNodes = nodes.map((node) => {
+          if (node.nodeId.startsWith("NaN")) {
+            return {
+              data: { id: node.nodeId, label: "leaf" },
+              classes: ["leaf-n-inv"],
+            };
+          } else {
+            return {
+              data: { id: node.nodeId, label: node.metadata.key },
+              pannable: true,
+              // grabbable: true,
+              scratch: {
+                left: node.metadata.left,
+                right: node.metadata.right,
+              },
+            };
+          }
+        });
         const cyEdges = edges.map((edge) => ({
           data: {
             id: edge.id,
@@ -137,9 +152,10 @@ export default function GraphVisualizer() {
             target: edge.tgtId,
             label: edge.edgeName,
           },
+          ...(edge.tgtId.startsWith("NaN") && { classes: ["leaf-n-inv"] }),
         }));
 
-        setElements([...cyNodes, ...cyEdges]);
+        setElements({ nodes: cyNodes, edges: cyEdges });
       })
       .catch((error) => {
         console.error("Помилка при завантаженні графа:", error);
@@ -176,10 +192,16 @@ export default function GraphVisualizer() {
               .selector("edge")
               .style({
                 width: 4,
-                // "target-arrow-shape": "triangle",
+                "target-arrow-shape": "triangle",
                 "line-color": "#9dbaea",
-                // "target-arrow-color": "#9dbaea",
+                "target-arrow-color": "#9dbaea",
                 "curve-style": "bezier",
+              })
+              .selector(".leaf-n-inv")
+              .style({
+                display: "element",
+                visibility: "hidden",
+                "background-color": "red",
               })
               .update();
             // cy.center()
@@ -190,7 +212,7 @@ export default function GraphVisualizer() {
           // userZoomingEnabled={true}
         />
       </div>
-      
+
       {showCode && (
         <PseudoCodeHighlighter
           codeLines={pseudoCode}

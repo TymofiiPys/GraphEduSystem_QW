@@ -41,7 +41,7 @@ const pseudoCode = [
   "      DFS(neighbor)",
 ];
 
-export default function GraphVisualizer() {
+export default function WeightedGraph() {
   const cyRef = useRef(null);
   const [step, setStep] = useState(0);
   const [showCode, setShowCode] = useState(false);

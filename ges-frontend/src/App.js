@@ -1,14 +1,15 @@
-import './App.css';
+import "./App.css";
 
-import React from 'react';
-import GraphVisualizer from './components/GraphVisualizer';
+import GraphVisualizer from "./components/GraphVisualizer";
+import BST from "./components/BST";
 
 function App() {
   return (
-      <div className="App">
-        <h1>Візуалізація графа</h1>
-        <GraphVisualizer />
-      </div>
+    <div className="App">
+      <h1>Візуалізація графа</h1>
+      {/* <GraphVisualizer /> */}
+      <BST/>
+    </div>
   );
 }
 
