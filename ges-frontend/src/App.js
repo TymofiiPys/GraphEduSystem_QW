@@ -4,6 +4,8 @@ import GraphVisualizer from "./components/GraphVisualizer";
 import BST from "./components/BST";
 import DirectedGraph from "./components/DirectedGraph";
 import WeightedGraph from "./components/WeightedGraph";
+import WeightedDirectedGraph from "./components/WeightedDirectedGraph";
+import RBTree from "./components/RBTree";
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
       {/* <GraphVisualizer /> */}
       {/* <BST/> */}
       {/* <DirectedGraph/> */}
-      <WeightedGraph/>
+      {/* <WeightedGraph/> */}
+      {/* <WeightedDirectedGraph/> */}
+      <RBTree/>
     </div>
   );
 }
