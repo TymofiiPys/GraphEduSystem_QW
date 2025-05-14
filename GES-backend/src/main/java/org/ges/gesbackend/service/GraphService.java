@@ -20,7 +20,7 @@ public class GraphService {
             Graph graph = graphOptional.get();
             switch (graph.getType()) {
                 case "BST":
-                case "RBTREE":
+                case "RBTREE": {
                     Set<Node> nodes = graph.getNodes();
                     int nanCounter = 0;
                     for (var node : nodes.stream().filter(x -> {
@@ -73,13 +73,30 @@ public class GraphService {
                         edgeRight.setTgtId((String) metadata.get("right"));
                         edgeRight.setEdgeName("");
 
-//                        if (!edgeLeft.getTgtId().equals("NaN"))
                         edges.add(edgeLeft);
-//                        if (!edgeRight.getTgtId().equals("NaN"))
                         edges.add(edgeRight);
                     }
                     graph.setEdges(edges);
                     break;
+                }
+                case "BTREE": {
+                    Set<EdgesInfo> edges = new LinkedHashSet<>();
+                    for (var node : graph.getNodes().stream().filter(x -> !x.getNodeId().startsWith("NaN")).toList()) {
+                        Map<String, Object> metadata = node.getMetadata();
+
+                        List<String> children = (List<String>) metadata.get("children");
+                        for (var child : children) {
+                            EdgesInfo edge = new EdgesInfo();
+                            edge.setGraphId(graph);
+                            edge.setSrcId(node.getNodeId());
+                            edge.setTgtId(child);
+                            edge.setEdgeName("");
+                            edges.add(edge);
+                        }
+                    }
+                    graph.setEdges(edges);
+                    break;
+                }
                 case "DIRGRAPH":
                 case "WGRAPH":
                 case "WDGRAPH":
