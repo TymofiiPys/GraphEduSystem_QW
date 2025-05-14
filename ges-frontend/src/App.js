@@ -6,6 +6,7 @@ import DirectedGraph from "./components/DirectedGraph";
 import WeightedGraph from "./components/WeightedGraph";
 import WeightedDirectedGraph from "./components/WeightedDirectedGraph";
 import RBTree from "./components/RBTree";
+import BTree from "./components/BTree";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       {/* <DirectedGraph/> */}
       {/* <WeightedGraph/> */}
       {/* <WeightedDirectedGraph/> */}
-      <RBTree/>
+      {/* <RBTree/> */}
+      <BTree />
     </div>
   );
 }
