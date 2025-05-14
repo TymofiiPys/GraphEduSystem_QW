@@ -20,12 +20,13 @@ public class GraphService {
             Graph graph = graphOptional.get();
             switch (graph.getType()) {
                 case "BST":
+                case "RBTREE":
                     Set<Node> nodes = graph.getNodes();
                     int nanCounter = 0;
                     for (var node : nodes.stream().filter(x -> {
                         Map<String, Object> metadata = x.getMetadata();
                         return ((String) metadata.get("left")).equals("NaN") ||
-                                ((String) metadata.get("right")).equals("NaN")  ;
+                                ((String) metadata.get("right")).equals("NaN");
                     }).toList()) {
                         Map<String, Object> metadata = node.getMetadata();
                         String leftChild = (String) metadata.get("left");
@@ -35,6 +36,9 @@ public class GraphService {
                             Node left = new Node();
                             left.setGraph(graph);
                             left.setNodeId(newName);
+                            if (graph.getType().equals("RBTREE")) {
+                                left.setMetadata(Map.of("color", "black"));
+                            }
                             nodes.add(left);
                         }
 
@@ -45,6 +49,9 @@ public class GraphService {
                             Node right = new Node();
                             right.setGraph(graph);
                             right.setNodeId(newName);
+                            if (graph.getType().equals("RBTREE")) {
+                                right.setMetadata(Map.of("color", "black"));
+                            }
                             nodes.add(right);
                         }
 
@@ -67,14 +74,15 @@ public class GraphService {
                         edgeRight.setEdgeName("");
 
 //                        if (!edgeLeft.getTgtId().equals("NaN"))
-                            edges.add(edgeLeft);
+                        edges.add(edgeLeft);
 //                        if (!edgeRight.getTgtId().equals("NaN"))
-                            edges.add(edgeRight);
+                        edges.add(edgeRight);
                     }
                     graph.setEdges(edges);
                     break;
                 case "DIRGRAPH":
                 case "WGRAPH":
+                case "WDGRAPH":
                     break;
                 default:
                     graph.setType("GRAPH");
