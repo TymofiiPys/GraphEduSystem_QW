@@ -4,8 +4,9 @@ import dagre from "cytoscape-dagre";
 import "./GraphVisualizer.css";
 import PseudoCodeHighlighter from "./PseudoCodeHighlighter";
 import axios from "axios";
+import cola from 'cytoscape-cola'
 
-const layoutOptions = { name: "cose" };
+const layoutOptions = { name: "cola" };
 
 const stepToLineMap = [0, 1, 2, 3, 4];
 

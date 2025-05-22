@@ -4,8 +4,20 @@ import dagre from "cytoscape-dagre";
 import "./GraphVisualizer.css";
 import PseudoCodeHighlighter from "./PseudoCodeHighlighter";
 import axios from "axios";
+import cola from 'cytoscape-cola'
+import avsdf from 'cytoscape-avsdf'
+import springy from 'cytoscape-springy'
+import d3force from 'cytoscape-d3-force'
+import euler from 'cytoscape-euler'
+import cytoscape from "cytoscape";
 
-const layoutOptions = { name: "cose" };
+cytoscape.use(cola);
+// cytoscape.use(avsdf);
+// cytoscape.use(d3force);
+// cytoscape.use(euler);
+
+const layoutOptions = { name: "cola" };
+// const layoutOptions = { name: "euler" };
 
 const stepToLineMap = [0, 1, 2, 3, 4];
 

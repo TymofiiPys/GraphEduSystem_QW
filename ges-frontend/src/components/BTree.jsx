@@ -136,8 +136,8 @@ export default function BTree() {
           const nwidth = text_width(nlabel) + 20;
           return {
             data: { id: node.nodeId, label: nlabel },
-            pannable: false,
-            grabbable: true,
+            pannable: true,
+            // grabbable: true,
             scratch: {
               children: node.metadata.children,
               keys: node.metadata.keys,
@@ -158,6 +158,7 @@ export default function BTree() {
           ...(edge.tgtId.startsWith("NaN") && { classes: ["leaf-n-inv"] }),
         }));
         console.log(cyNodes);
+        console.log(cyEdges);
         setElements({ nodes: cyNodes, edges: cyEdges });
       })
       .catch((error) => {
@@ -182,10 +183,10 @@ export default function BTree() {
           layout={layoutOptions}
           cy={(cy) => {
             cyRef.current = cy;
-            cy.zoom({
-              level: 1,
-              position: { x: 0, y: 0 },
-            });
+            // cy.zoom({
+            //   level: 2,
+            //   position: { x: 0, y: 0 },
+            // });
             cy.style()
               .selector(".highlighted")
               .style({
@@ -231,7 +232,7 @@ export default function BTree() {
                 padding: 10,
               })
               .update();
-            // cy.center()
+            cy.center()
           }}
           // userPanningEnabled={false}
           // boxSelectionEnabled={false}
