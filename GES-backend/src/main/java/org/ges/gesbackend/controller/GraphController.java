@@ -19,7 +19,7 @@ public class GraphController {
     private final GraphService graphService;
 
     @GetMapping("/old")
-    public Map<String, Object> getGraphOld() {
+    public Map<String, List<Map<String, Object>>>  getGraphOld() {
         Map<String, Object> graph = new HashMap<>();
 
         Map<String, List<Map<String, Object>>> elements = new HashMap<>();
@@ -55,7 +55,7 @@ public class GraphController {
         elements.put("edges", edges);
         graph.put("elements", elements);
 
-        return graph;
+        return elements;
     }
 
     @GetMapping("/{id}")

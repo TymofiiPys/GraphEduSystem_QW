@@ -16,6 +16,36 @@ import cytoscape from "cytoscape";
 
 cytoscape.use(dagre);
 
+const stylesheet = [
+  {
+    selector: "node",
+    style: {
+      label: "data(label)",
+    },
+  },
+  {
+    selector: ".highlight-blue",
+    style: {
+      "background-color": "#0000ff",
+      "line-color": "red",
+    },
+  },
+  {
+    selector: ".highlight-green",
+    style: {
+      "background-color": "green",
+      "line-color": "red",
+    },
+  },
+  {
+    selector: ".highlight-red",
+    style: {
+      "background-color": "#ff0000",
+      "line-color": "red",
+    },
+  },
+];
+
 // const elements = {
 //   nodes: [
 //     { data: { id: "A", label: "1" }, pannable: false, grabbable: true },
@@ -33,7 +63,15 @@ const layoutOptions = { name: "dagre" };
 
 const stepToLineMap = [-1, 2, 3, 4, 5, 0, 1];
 
-const params = ["", "k = 5, x.key = 6", "x.left = 4, k = 5", "x.key = 4, k = 5", "x.right = 5, k = 5", "k = 5, x.key = 5", "x = 5"]
+const params = [
+  "",
+  "k = 5, x.key = 6",
+  "x.left = 4, k = 5",
+  "x.key = 4, k = 5",
+  "x.right = 5, k = 5",
+  "k = 5, x.key = 5",
+  "x = 5",
+];
 
 const pseudoCode = [
   "if x == NIL or k == x.key",
@@ -63,16 +101,38 @@ export default function BST() {
   //         { data: { source: 'A', target: 'C' } },
   //     ]
   // })}, []);
-  useEffect(() => {
-    axios
-      .get("/api/graph/old")
-      .then((response) => {
-        setElements(response.data.elements);
-      })
-      .catch((error) => {
-        console.error("Помилка при завантаженні графа:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/graph/old")
+  //     .then((res) => {
+  //       // setElements(response.data.elements);
+  //       console.log(res.data);
+  //       const { nodes, edges } = res.data;
+  //       const cyNodes = nodes.map((node) => {
+  //         if (node.nodeId.startsWith("NaN")) {
+  //           return {
+  //             data: { id: node.nodeId, label: "leaf" },
+  //             classes: ["leaf-n-inv"],
+  //           };
+  //         } else {
+  //           return {
+  //             data: { id: node.nodeId, label: node.metadata.key },
+  //             pannable: true,
+  //             // grabbable: true,
+  //             scratch: {
+  //               left: node.metadata.left,
+  //               right: node.metadata.right,
+  //               colors: [],
+  //             },
+  //           };
+  //         }
+  //       }
+  //       )
+  //     })
+  //     .catch((error) => {
+  //       console.error("Помилка при завантаженні графа:", error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     console.log(elements);
@@ -105,6 +165,14 @@ export default function BST() {
 
   const steps = [[], ["A"], ["A", "B"], ["B"], ["B", "E"], ["E"], ["E"]];
 
+  const algoInstructions = [
+    {
+      type: "highlight-node-line",
+      nodeId: "A",
+      color: "red",
+    },
+  ];
+
   const highlightNodes = (nodeIds) => {
     const cy = cyRef.current;
     if (!cy) return;
@@ -116,9 +184,33 @@ export default function BST() {
   };
 
   const nextStep = () => {
-    const next = (step + 1) % steps.length;
+    const cy = cyRef.current;
+    const next = (step + 1) % 4;
     setStep(next);
-    highlightNodes(steps[next]);
+    console.log(next);
+    // highlightNodes(steps[next]);
+    var colors = cy.nodes("#1").scratch("colors");
+    if (next === 1) colors.push("highlight-blue");
+    if (next === 2) colors.push("highlight-red");
+    if (next === 3) colors.push("highlight-green");
+    cy.nodes("#1").classes([]);
+    cy.nodes("#1").addClass(colors[colors.length - 1]);
+    console.log(colors[colors.length - 1]);
+    console.log(cy.nodes("#1").scratch("colors"));
+    // console.log(cy.nodes("#A").classes());
+  };
+
+  const prevStep = () => {
+    const cy = cyRef.current;
+
+    const next = (((step - 1) % 4) + 4) % 4;
+    setStep(next);
+    console.log(next);
+    var colors = cy.nodes("#1").scratch("colors");
+    colors.pop();
+    cy.nodes("#1").classes([]);
+    if (colors.length !== 0) cy.nodes("#1").addClass(colors[colors.length - 1]);
+    console.log(cy.nodes("#1").scratch("colors"));
   };
 
   const toggleCode = () => {
@@ -127,9 +219,10 @@ export default function BST() {
 
   const showGraph1 = () => {
     axios
-      .get("/api/graph/old")
+      .get("/api/graph/7982f55f-5b0d-44f3-b4d8-513e8e728574")
       .then((res) => {
         // setElements(response.data.elements);
+        console.log(res.data);
         const { nodes, edges } = res.data;
         const cyNodes = nodes.map((node) => {
           if (node.nodeId.startsWith("NaN")) {
@@ -145,6 +238,7 @@ export default function BST() {
               scratch: {
                 left: node.metadata.left,
                 right: node.metadata.right,
+                colors: [],
               },
             };
           }
@@ -170,6 +264,7 @@ export default function BST() {
     <div>
       <input></input>
       <button onClick={nextStep}>Пошук</button>
+      <button onClick={prevStep}>Попередній крок</button>
       <button onClick={toggleCode} style={{ marginLeft: "10px" }}>
         {showCode ? "Сховати псевдокод" : "Показати псевдокод"}
       </button>
@@ -177,11 +272,13 @@ export default function BST() {
         Граф 1
       </button>
       <div className="graph-container">
+        <span>▬ легенда</span>
         <CytoscapeComponent
           elements={CytoscapeComponent.normalizeElements(elements)}
           // style={{ width: '100vw', height: '100vh', zindex:'999', }}
           className="cyc"
           layout={layoutOptions}
+          stylesheet={stylesheet}
           cy={(cy) => {
             cyRef.current = cy;
             // cy.zoom({
@@ -189,11 +286,21 @@ export default function BST() {
             //   position: { x: 0, y: 0 },
             // });
             cy.style()
-              .selector(".highlighted")
-              .style({
-                "background-color": "green",
-                "line-color": "red",
-              })
+              // .selector(".highlight-blue")
+              // .style({
+              //   "background-color": "#0000ff",
+              //   "line-color": "red",
+              // })
+              // .selector(".highlight-red")
+              // .style({
+              //   "background-color": "red",
+              //   "line-color": "red",
+              // })
+              // .selector(".highlight-green")
+              // .style({
+              //   "background-color": "green",
+              //   "line-color": "red",
+              // })
               .selector("edge")
               .style({
                 width: 4,

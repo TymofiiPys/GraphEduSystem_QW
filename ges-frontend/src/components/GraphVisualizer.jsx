@@ -39,14 +39,14 @@ export default function GraphVisualizer() {
   const [elements, setElements] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/api/graph/old")
-      .then((response) => {
-        setElements(response.data.elements);
-      })
-      .catch((error) => {
-        console.error("Помилка при завантаженні графа:", error);
-      });
+    // axios
+    //   .get("/api/graph/old")
+    //   .then((response) => {
+    //     setElements(response.data.elements);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Помилка при завантаженні графа:", error);
+    //   });
   }, []);
 
   useEffect(() => {

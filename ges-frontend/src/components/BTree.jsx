@@ -108,6 +108,8 @@ export default function BTree() {
       .get("/api/graph/58f2beb6-0f55-4f05-82f0-e4f76c8dbd7b")
       .then((res) => {
         const { nodes, edges } = res.data;
+        console.log(res.data);
+
         // const cyNodes = nodes.flatMap((node) => {
         //   const nodeContainer = {
         //     data: { id: node.nodeId, label: "", },
@@ -143,7 +145,7 @@ export default function BTree() {
               keys: node.metadata.keys,
             },
             style: {
-              width: nwidth
+              width: nwidth,
             },
           };
         });
@@ -232,7 +234,7 @@ export default function BTree() {
                 padding: 10,
               })
               .update();
-            cy.center()
+            cy.center();
           }}
           // userPanningEnabled={false}
           // boxSelectionEnabled={false}
