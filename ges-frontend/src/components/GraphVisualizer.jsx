@@ -7,14 +7,28 @@ import axios from "axios";
 
 const layoutOptions = { name: "cose" };
 
-const stepToLineMap = [0, 1, 2, 3, 4];
+const stepToLineMap = [-1, [5,6,7,8,9], 11, 12, 18];
 
 const pseudoCode = [
-  "DFS(node):",
-  "  mark node as visited",
-  "  for each neighbor of node:",
-  "    if neighbor not visited:",
-  "      DFS(neighbor)",
+  "BFS(s)",
+  "for each vertex u in G.V - {s}",
+  "  u.color = WHITE",
+  "  u.d = inf",
+  "  u.pre = NIL",
+  "s.color = GRAY",
+  "s.d = 0",
+  "s.pre = NIL",
+  "Q = []",
+  "ENQUEUE(Q, s)",
+  "while Q != []",
+  "  u = DEQUEUE(Q)",
+  "  for each v in G.Adj[u]",
+  "    if v.color == WHITE",
+  "      v.color = GRAY",
+  "      v.d = u.d + 1",
+  "      v.pre = u",
+  "      ENQUEUE(Q, v)",
+  "  u.color = BLACK",
 ];
 
 export default function GraphVisualizer() {
@@ -62,15 +76,26 @@ export default function GraphVisualizer() {
     }
   }, [elements]);
 
-  const steps = [["A"], ["A", "B"], ["A", "B", "C"]];
+  const steps = [[], ["1G"], ["1G", "2G", "5G"], ["1B", "2G", "5G"],
+["1B", "2G", "3G", "4G", "5G"],
+["1B", "2B", "3G", "4G", "5G"],
+["1B", "2B", "3G", "4G", "5B"],
+["1B", "2B", "3B", "4G", "5B"],
+["1B", "2B", "3B", "4B", "5B"],
+// ["1B", "2G", "3G", "4G", "5G"],
+];
 
   const highlightNodes = (nodeIds) => {
     const cy = cyRef.current;
     if (!cy) return;
-    cy.nodes().removeClass("highlighted");
+    cy.nodes().removeClass("highlighted-G");
+    cy.nodes().removeClass("highlighted-B");
     nodeIds.forEach((id) => {
-      const node = cy.getElementById(id);
-      node.addClass("highlighted");
+      const node = cy.getElementById(id[0]);
+      console.log(id[0]);
+      node.addClass("highlighted-" + id[1]);
+      console.log(id[1]);
+
     });
   };
 
@@ -112,7 +137,8 @@ export default function GraphVisualizer() {
 
   return (
     <div>
-      <button onClick={nextStep}>Наступний крок</button>
+      <input placeholder="Номер вершини"></input>
+      <button onClick={nextStep}>Пошук у ширину</button>
       <button onClick={toggleCode} style={{ marginLeft: "10px" }}>
         {showCode ? "Сховати псевдокод" : "Показати псевдокод"}
       </button>
@@ -127,14 +153,25 @@ export default function GraphVisualizer() {
           layout={layoutOptions}
           cy={(cy) => {
             cyRef.current = cy;
-            cy.zoom({
-              level: 1,
-              position: { x: 0, y: 0 },
-            });
+            // cy.zoom({
+            //   level: 1,
+            //   position: { x: 0, y: 0 },
+            // });
             cy.style()
-              .selector(".highlighted")
+                          .selector("node")
               .style({
-                "background-color": "red",
+                "background-color": "white",
+                "line-color": "red",
+                "border-width": "1px"
+              })
+              .selector(".highlighted-G")
+              .style({
+                "background-color": "grey",
+                "line-color": "red",
+              })
+              .selector(".highlighted-B")
+              .style({
+                "background-color": "black",
                 "line-color": "red",
               })
               .selector("edge")
@@ -152,7 +189,7 @@ export default function GraphVisualizer() {
           // userZoomingEnabled={true}
         />
       </div>
-      
+
       {showCode && (
         <PseudoCodeHighlighter
           codeLines={pseudoCode}

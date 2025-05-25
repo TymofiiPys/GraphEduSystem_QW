@@ -31,19 +31,23 @@ cytoscape.use(dagre);
 const layoutOptions = { name: "dagre" };
 // const layoutOptions = { name: "cose" };
 
-const stepToLineMap = [0, 1, 2, 3, 4];
+const stepToLineMap = [-1, 2, 3, 4, 5, 0, 1];
+
+const params = ["", "k = 5, x.key = 6", "x.left = 4, k = 5", "x.key = 4, k = 5", "x.right = 5, k = 5", "k = 5, x.key = 5", "x = 5"]
 
 const pseudoCode = [
-  "DFS(node):",
-  "  mark node as visited",
-  "  for each neighbor of node:",
-  "    if neighbor not visited:",
-  "      DFS(neighbor)",
+  "if x == NIL or k == x.key",
+  "  return x",
+  "if k < x.key",
+  "  return tree-search(x.left, k)",
+  "else",
+  "  return tree-search(x.right, k)",
 ];
 
 export default function BST() {
   const cyRef = useRef(null);
   const [step, setStep] = useState(0);
+  // const [params, setParams] = useState("");
   const [showCode, setShowCode] = useState(false);
 
   const [elements, setElements] = useState([]);
@@ -99,7 +103,7 @@ export default function BST() {
     }
   }, [elements]);
 
-  const steps = [["A"], ["A", "B"], ["A", "B", "C"]];
+  const steps = [[], ["A"], ["A", "B"], ["B"], ["B", "E"], ["E"], ["E"]];
 
   const highlightNodes = (nodeIds) => {
     const cy = cyRef.current;
@@ -123,7 +127,7 @@ export default function BST() {
 
   const showGraph1 = () => {
     axios
-      .get("/api/graph/7982f55f-5b0d-44f3-b4d8-513e8e728574")
+      .get("/api/graph/old")
       .then((res) => {
         // setElements(response.data.elements);
         const { nodes, edges } = res.data;
@@ -164,7 +168,8 @@ export default function BST() {
 
   return (
     <div>
-      <button onClick={nextStep}>Наступний крок</button>
+      <input></input>
+      <button onClick={nextStep}>Пошук</button>
       <button onClick={toggleCode} style={{ marginLeft: "10px" }}>
         {showCode ? "Сховати псевдокод" : "Показати псевдокод"}
       </button>
@@ -179,14 +184,14 @@ export default function BST() {
           layout={layoutOptions}
           cy={(cy) => {
             cyRef.current = cy;
-            cy.zoom({
-              level: 1,
-              position: { x: 0, y: 0 },
-            });
+            // cy.zoom({
+            //   level: 1,
+            //   position: { x: 0, y: 0 },
+            // });
             cy.style()
               .selector(".highlighted")
               .style({
-                "background-color": "red",
+                "background-color": "green",
                 "line-color": "red",
               })
               .selector("edge")
@@ -217,6 +222,7 @@ export default function BST() {
         <PseudoCodeHighlighter
           codeLines={pseudoCode}
           currentLine={stepToLineMap[step]}
+          params={params[step]}
         />
       )}
     </div>

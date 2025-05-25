@@ -2,7 +2,7 @@ import React from "react";
 import "./PseudoCodeHighlighter.css";
 import Draggable from "react-draggable";
 
-export default function PseudoCodeHighlighter({ codeLines, currentLine }) {
+export default function PseudoCodeHighlighter({ codeLines, currentLine, params }) {
   const windowRef = React.useRef(null);
 
   return (
@@ -15,7 +15,7 @@ export default function PseudoCodeHighlighter({ codeLines, currentLine }) {
               index === currentLine ? "highlighted" : ""
             }`}
           >
-            {line}
+            {index === currentLine ? line + " (" + params + ")": line}
           </div>
         ))}
       </pre>

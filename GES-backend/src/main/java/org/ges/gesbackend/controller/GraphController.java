@@ -26,14 +26,14 @@ public class GraphController {
 
         // Nodes
         List<Map<String, Object>> nodes = new ArrayList<>();
-        nodes.add(Map.of("data", Map.of("id", "B", "label", "5"), "pannable", false, "grabbable", true));
+        nodes.add(Map.of("data", Map.of("id", "B", "label", "4"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "D", "label", "2"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "A", "label", "6"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "C", "label", "7"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "bob", "label", "nan"), "selectable", false, "style", Map.of("display", "element", "visibility", "hidden")));
         nodes.add(Map.of("data", Map.of("id", "F", "label", "8"), "pannable", false, "grabbable", true));
         nodes.add(Map.of("data", Map.of("id", "E", "label", "5"), "pannable", false, "grabbable", true));
-        nodes.add(Map.of("data", Map.of("id", "і", "label", "notconnected"), "pannable", false, "grabbable", true));
+//        nodes.add(Map.of("data", Map.of("id", "і", "label", "notconnected"), "pannable", false, "grabbable", true));
 //        nodes.add(Map.of("data", Map.of("id", "55f", "label", "anothernotconnected"), "pannable", false, "grabbable", true));
 //        nodes.add(Map.of("data", Map.of("id", "A", "label", "554"), "pannable", false, "grabbable", true));
 //        nodes.add(Map.of("data", Map.of("id", "A", "label", "5"), "pannable", false, "grabbable", true));
@@ -48,8 +48,8 @@ public class GraphController {
         edges.add(Map.of("data", Map.of("source", "B", "target", "E")));
         edges.add(Map.of("data", Map.of("source", "C", "target", "bob"), "style", Map.of("display", "element", "visibility", "hidden")));
         edges.add(Map.of("data", Map.of("source", "C", "target", "F")));
-        edges.add(Map.of("data", Map.of("source", "C", "target", "F")));
-        edges.add(Map.of("data", Map.of("source", "F", "target", "F"), "pannable", false,"grabbable", true));
+//        edges.add(Map.of("data", Map.of("source", "C", "target", "F")));
+//        edges.add(Map.of("data", Map.of("source", "F", "target", "F"), "pannable", false,"grabbable", true));
 
         elements.put("nodes", nodes);
         elements.put("edges", edges);
