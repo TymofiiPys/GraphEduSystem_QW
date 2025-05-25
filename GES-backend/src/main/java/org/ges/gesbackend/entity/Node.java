@@ -1,7 +1,6 @@
 package org.ges.gesbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -39,13 +36,4 @@ public class Node {
     @Column(name = "metadata")
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> metadata;
-
-//    @OneToMany(mappedBy = "source")
-//    @JsonManagedReference
-//    private Set<Edge> edges_src = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "target")
-//    @JsonManagedReference
-//    private Set<Edge> edges_tgt = new LinkedHashSet<>();
-
 }

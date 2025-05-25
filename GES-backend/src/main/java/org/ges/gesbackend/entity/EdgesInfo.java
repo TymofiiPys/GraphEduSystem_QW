@@ -26,9 +26,6 @@ public class EdgesInfo {
     @Column(name = "id")
     private UUID id;
 
-//    @Column(name = "graph_id")
-//    private UUID graphId;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference

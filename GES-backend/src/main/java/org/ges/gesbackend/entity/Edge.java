@@ -44,24 +44,4 @@ public class Edge {
     @Column(name = "metadata")
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> metadata;
-
-
-//
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonBackReference
-//    @JoinColumn(name = "source", nullable = false)
-//    private Node source;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonBackReference
-//    @JoinColumn(name = "target", nullable = false)
-//    private Node target;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonBackReference
-//    @JoinColumn(name = "graph_id", nullable = false)
-//    private Graph graph;
 }

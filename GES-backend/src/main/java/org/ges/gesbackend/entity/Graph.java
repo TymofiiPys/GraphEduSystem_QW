@@ -34,10 +34,6 @@ public class Graph {
     @JsonManagedReference
     private Set<Node> nodes = new LinkedHashSet<>();
 
-//    @OneToMany(mappedBy = "graph")
-//    @JsonManagedReference
-//    private Set<Edge> edges = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "graphId")
     @JsonManagedReference
     private Set<EdgesInfo> edges = new LinkedHashSet<>();
